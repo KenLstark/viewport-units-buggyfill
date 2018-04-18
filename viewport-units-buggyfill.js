@@ -68,6 +68,23 @@
       return versionNumber <= 4.4;
     })();
 
+    // Adding check for mobile android chrome
+    var isMobileChrome = (function() {
+      // Checks for Chrome on Android
+      
+      var isAndroid = userAgent.indexOf(' Android ') > -1;
+      if (!isAndroid) {
+        return false;
+      }
+
+      var isChrome = userAgent.indexOf('Chrome/') > -1;
+      if (!isChrome) {
+        return false;
+      }
+
+      return true;
+    })();
+
     // added check for IE10, IE11 and Edge < 20, since it *still* doesn't understand vmax
     // http://caniuse.com/#feat=viewport-units
     if (!isBuggyIE) {
@@ -142,7 +159,7 @@
         isBuggyIE = false;
       }
 
-      if (isOldIE || (!options.force && !isMobileSafari && !isBuggyIE && !isBadStockAndroid && !isOperaMini && (!options.hacks || !options.hacks.required(options)))) {
+      if (isOldIE || (!options.force && !isMobileChrome && !isMobileSafari && !isBuggyIE && !isBadStockAndroid && !isOperaMini && (!options.hacks || !options.hacks.required(options)))) {
         // this buggyfill only applies to mobile safari, IE9-10 and the Stock Android Browser.
         if (window.console && isOldIE) {
           console.info('viewport-units-buggyfill requires a proper CSSOM and basic viewport unit support, which are not available in IE8 and below');
